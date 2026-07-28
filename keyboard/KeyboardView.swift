@@ -5,9 +5,6 @@ import UIKit
 class KeyboardView: UIView {
 
     weak var delegate: KeyDelegate?
-    
-    private let keyboarHeight: CGFloat = Calculator.getKeyboardHeight()
-    
     var rows: [KeyRow] = []
 
     
@@ -28,6 +25,16 @@ class KeyboardView: UIView {
     
     private func setupKeyboardView() {
         var previousRow: UIView?
+        let horizontalInset: CGFloat
+        if #available(iOSApplicationExtension 26.0, *),
+           UIDevice.current.userInterfaceIdiom == .phone {
+            // Combined with KeyBase's 3 pt inset, this places the first and
+            // last keycaps 6.5 pt from the keyboard viewport edge.
+            horizontalInset = 3.5
+        } else {
+            horizontalInset = 0
+        }
+
         for row in rows {
             
             row.delegate = delegate
@@ -36,9 +43,9 @@ class KeyboardView: UIView {
             
             // Set constraints for each row
             NSLayoutConstraint.activate([
-                row.leftAnchor.constraint(equalTo: leftAnchor),
-                row.rightAnchor.constraint(equalTo: rightAnchor),
-                row.heightAnchor.constraint(equalToConstant: keyboarHeight / CGFloat(rows.count))
+                row.leftAnchor.constraint(equalTo: leftAnchor, constant: horizontalInset),
+                row.rightAnchor.constraint(equalTo: rightAnchor, constant: -horizontalInset),
+                row.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1 / CGFloat(rows.count))
             ])
 
             if let previousRow = previousRow {

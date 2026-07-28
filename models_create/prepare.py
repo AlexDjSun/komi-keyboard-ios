@@ -112,10 +112,12 @@ def preprocess_corpus(input_file, output_dir):
                 key = f"{lower_tokens[i]} {lower_tokens[i+1]}"
                 trigrams[key][lower_tokens[i+2]] += 1
             
-            # Update sentence tracking
-            sentence_start = False
-            if tokens[-1][-1] in ".!?":
-                sentence_start = True
+            # Check the original text because punctuation was removed from
+            # `tokens` during normalization. Allow closing quotes/brackets
+            # after the terminal punctuation.
+            sentence_start = bool(
+                re.search(r'[.!?](?:["”’\)\]]*)$', original_line)
+            )
             
             total_sentences += 1
             if total_sentences % 10000 == 0:

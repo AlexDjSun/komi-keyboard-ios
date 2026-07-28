@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Hide keyboard" : {
+
+    },
     "space" : {
       "extractionState" : "manual",
       "localizations" : {

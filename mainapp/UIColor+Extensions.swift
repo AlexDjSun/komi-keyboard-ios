@@ -13,18 +13,36 @@ extension UIColor {
     
     @available(iOSApplicationExtension 13.0, *)
     static let dynamicKeyColor = UIColor { traitCollection in
+        if #available(iOSApplicationExtension 26.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor.white.withAlphaComponent(0.16)
+                : .white
+        }
         return traitCollection.userInterfaceStyle == .dark ? .darkButton : .white
     }
     @available(iOSApplicationExtension 13.0, *)
     static let dynamicActionKeyColor = UIColor { traitCollection in
+        if #available(iOSApplicationExtension 26.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor.white.withAlphaComponent(0.16)
+                : .white
+        }
         return traitCollection.userInterfaceStyle == .dark ? .darkActionButton : .lightActionButton
     }
     @available(iOSApplicationExtension 13.0, *)
     static let dynamicTextColor = UIColor { traitCollection in
+        if #available(iOSApplicationExtension 26.0, *) {
+            return UIColor.label.resolvedColor(with: traitCollection)
+        }
         return traitCollection.userInterfaceStyle == .dark ? .white : .black
     }
     @available(iOSApplicationExtension 13.0, *)
     static let dynamicShadowColor = UIColor { traitCollection in
+        if #available(iOSApplicationExtension 26.0, *) {
+            return UIColor.black.withAlphaComponent(
+                traitCollection.userInterfaceStyle == .dark ? 0.45 : 0.22
+            )
+        }
         return traitCollection.userInterfaceStyle == .dark ? .black : .gray
     }
     @available(iOSApplicationExtension 13.0, *)
@@ -33,6 +51,11 @@ extension UIColor {
     }
     @available(iOSApplicationExtension 13.0, *)
     static let dynamicPopupColor = UIColor { traitCollection in
+        if #available(iOSApplicationExtension 26.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(white: 80.0 / 255, alpha: 1)
+                : .white
+        }
         return traitCollection.userInterfaceStyle == .dark ? .darkPopup : .white
     }
     @available(iOSApplicationExtension 13.0, *)

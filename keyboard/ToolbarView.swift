@@ -2,13 +2,11 @@ import UIKit
 
 class ToolbarView: UIView {
     
-    private let hideKeyboardButton = UIButton(type: .system)
+    private let hideKeyboardButton = UIButton(type: .custom)
     private var suggestionButtons: [UIButton] = []
     private var separatorViews: [UIView] = []
+    private var suggestions: [PredictionSuggestion?] = Array(repeating: nil, count: 3)
     weak var keyboardViewController: KeyboardViewController? 
-
-    private let suggestionsStackView = UIStackView()
-    private var suggestions: [String] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,8 +24,13 @@ class ToolbarView: UIView {
     }
 
     private func setupHideKeyboardButton() {
-        hideKeyboardButton.setImage(UIImage(named: "keyboard.down"), for: .normal)
+        let image = UIImage(named: "keyboard.down")?.withRenderingMode(.alwaysTemplate)
+        hideKeyboardButton.setImage(image, for: .normal)
+        hideKeyboardButton.setImage(image, for: .highlighted)
         hideKeyboardButton.tintColor = .dynamicTextColor
+        hideKeyboardButton.backgroundColor = .clear
+        hideKeyboardButton.adjustsImageWhenHighlighted = false
+        hideKeyboardButton.accessibilityLabel = NSLocalizedString("Hide keyboard", comment: "")
         hideKeyboardButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
         hideKeyboardButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(hideKeyboardButton)
@@ -43,8 +46,9 @@ class ToolbarView: UIView {
     }
 
     private func setupSuggestionButtons() {
-        for _ in 0..<3 {
-            let button = UIButton()
+        for index in 0..<3 {
+            let button = UIButton(type: .system)
+            button.tag = index
             button.setTitleColor(.dynamicTextColor, for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 16)
             button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -103,26 +107,20 @@ class ToolbarView: UIView {
         hideKeyboardButton.isHidden = hidden
     }
 
-    func updateSuggestions(_ suggestions: [String]) {
+    func updateSuggestions(_ suggestions: [PredictionSuggestion]) {
         for (index, button) in suggestionButtons.enumerated() {
-            UIView.animate(withDuration: 0.10, animations: {
-                button.alpha = 0.5
-            }, completion: { _ in
-                if index < suggestions.count {
-                    button.setTitle(suggestions[index], for: .normal)
-                    button.isHidden = false
-                    UIView.animate(withDuration: 0.10) {
-                        button.alpha = 1
-                    }
-                } else {
-                    button.isHidden = true
-                }
-            })
+            let suggestion = index < suggestions.count ? suggestions[index] : nil
+            self.suggestions[index] = suggestion
+            button.setTitle(suggestion?.text, for: .normal)
+            button.isHidden = suggestion == nil
         }
     }
 
     @objc private func suggestionTapped(_ sender: UIButton) {
-        guard let word = sender.title(for: .normal) else { return }
-        keyboardViewController?.replaceCurrentWord(with: word)
+        guard suggestions.indices.contains(sender.tag),
+              let suggestion = suggestions[sender.tag] else {
+            return
+        }
+        keyboardViewController?.acceptSuggestion(suggestion)
     }
 }

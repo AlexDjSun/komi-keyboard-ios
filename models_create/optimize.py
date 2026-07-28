@@ -1,6 +1,7 @@
 import json
 import os
 import operator
+from compile import compile_model
 
 def optimize_models(input_dir, min_unigram_count=5, min_bigram_count=3, 
                    min_trigram_count=2, min_cap_count=2, top_k=20000):
@@ -163,6 +164,11 @@ def convert_to_probabilities(output_dir, unigrams, bigrams, trigrams, completion
     
     with open(os.path.join(output_dir, 'cap_patterns_probs.json'), 'w', encoding='utf-8') as f:
         json.dump(cap_pattern_probs, f, ensure_ascii=False)
+
+    compile_model(
+        output_dir,
+        os.path.join(output_dir, 'prediction_model.txt')
+    )
 
 if __name__ == "__main__":
     input_directory = "models"

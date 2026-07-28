@@ -6,35 +6,26 @@ class Calculator {
     /**
      @return height of the view containing the keyboard buttons
      */
-    static func getKeyboardHeight()->CGFloat{
-        
+    static func getKeyboardHeight(isLandscape: Bool) -> CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            //                          Portrait    Landscape
-            return getWidth() < getHeight() ? 216 : 162
-            
-        } else{
-            //                          Portrait    Landscape
-            return getWidth() < getHeight() ? 265 : 353
-            
+            if #available(iOSApplicationExtension 26.0, *) {
+                return isLandscape ? 162 : 225
+            }
+            return isLandscape ? 162 : 216
         }
+        return isLandscape ? 353 : 265
     }
     
     /**
      @return the height of the  toolbar
      */
-    static func getToolbar() -> CGFloat{
+    static func getToolbarHeight(isLandscape: Bool) -> CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return getWidth() < getHeight() ? 45 : 38
-            
+            if #available(iOSApplicationExtension 26.0, *) {
+                return isLandscape ? 38 : 46
+            }
+            return isLandscape ? 38 : 45
         }
-        //iPad
         return 55
-    }
-    
-    static func getWidth() -> CGFloat{
-        return UIScreen.main.bounds.width
-    }
-    static func getHeight() -> CGFloat{
-        return UIScreen.main.bounds.height
     }
 }

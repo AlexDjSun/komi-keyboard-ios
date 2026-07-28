@@ -20,11 +20,7 @@
 		5F35D8A52DD30F0700806C33 /* PredictionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F35D8A32DD30EFB00806C33 /* PredictionEngine.swift */; };
 		5F35D8A62DD30F0700806C33 /* PredictionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F35D8A32DD30EFB00806C33 /* PredictionEngine.swift */; };
 		5F3CA7F92BDAF8CF00A3B96F /* SubcharPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3CA7F82BDAF8CF00A3B96F /* SubcharPopup.swift */; };
-		5F848FAE2DD32D3A00DB49D4 /* completion_probs.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F848FA12DD32D3A00DB49D4 /* completion_probs.json */; };
-		5F848FAF2DD32D3A00DB49D4 /* bigram_probs.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F848F9F2DD32D3A00DB49D4 /* bigram_probs.json */; };
-		5F848FB02DD32D3A00DB49D4 /* trigram_probs.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F848FA22DD32D3A00DB49D4 /* trigram_probs.json */; };
-		5F848FB12DD32D3A00DB49D4 /* cap_patterns_probs.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F848FA02DD32D3A00DB49D4 /* cap_patterns_probs.json */; };
-		5F848FB22DD32D3A00DB49D4 /* unigram_probs.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F848FA32DD32D3A00DB49D4 /* unigram_probs.json */; };
+		A1B2C3D4E5F60718293A4B5D /* prediction_model.txt in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* prediction_model.txt */; };
 		5F86F9ED2BD9FC2000F64479 /* MenuStackView.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F86F9E92BD9FC2000F64479 /* MenuStackView.swift .swift */; };
 		5F86F9EE2BD9FC2000F64479 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F86F9EA2BD9FC2000F64479 /* Extensions.swift */; };
 		5F86F9EF2BD9FC2000F64479 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F86F9EB2BD9FC2000F64479 /* TextField.swift */; };
@@ -140,6 +136,7 @@
 		5F848FA12DD32D3A00DB49D4 /* completion_probs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = completion_probs.json; sourceTree = "<group>"; };
 		5F848FA22DD32D3A00DB49D4 /* trigram_probs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = trigram_probs.json; sourceTree = "<group>"; };
 		5F848FA32DD32D3A00DB49D4 /* unigram_probs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = unigram_probs.json; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5C /* prediction_model.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = prediction_model.txt; sourceTree = "<group>"; };
 		5F86F9E92BD9FC2000F64479 /* MenuStackView.swift .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MenuStackView.swift .swift"; sourceTree = "<group>"; };
 		5F86F9EA2BD9FC2000F64479 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5F86F9EB2BD9FC2000F64479 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
@@ -223,6 +220,7 @@
 				5F848FA12DD32D3A00DB49D4 /* completion_probs.json */,
 				5F848FA22DD32D3A00DB49D4 /* trigram_probs.json */,
 				5F848FA32DD32D3A00DB49D4 /* unigram_probs.json */,
+				A1B2C3D4E5F60718293A4B5C /* prediction_model.txt */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -523,11 +521,7 @@
 				5F8A92462BDDD16F003A279C /* Assets.xcassets in Resources */,
 				5F8A91F92BDDC106003A279C /* InfoPlist.xcstrings in Resources */,
 				5FFE9A302BE0533000B1A569 /* Assets.xcassets in Resources */,
-				5F848FAE2DD32D3A00DB49D4 /* completion_probs.json in Resources */,
-				5F848FAF2DD32D3A00DB49D4 /* bigram_probs.json in Resources */,
-				5F848FB02DD32D3A00DB49D4 /* trigram_probs.json in Resources */,
-				5F848FB12DD32D3A00DB49D4 /* cap_patterns_probs.json in Resources */,
-				5F848FB22DD32D3A00DB49D4 /* unigram_probs.json in Resources */,
+				A1B2C3D4E5F60718293A4B5D /* prediction_model.txt in Resources */,
 				5F244F382BDE333A00BEEF06 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -79,7 +79,15 @@ class CharacterKey: KeyBase {
         clickFeedback.impactOccurred()
         
         longPressTimer?.invalidate()
-        longPressTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(handleLongPress), userInfo: nil, repeats: false)
+        let timer = Timer(
+            timeInterval: 0.5,
+            target: self,
+            selector: #selector(handleLongPress),
+            userInfo: nil,
+            repeats: false
+        )
+        longPressTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -96,9 +104,15 @@ class CharacterKey: KeyBase {
         subcharPopupView?.triggerSelectedButton()
         hideSubcharPopup()
         clickFeedback.prepare()
-        
-        longPressTimer?.invalidate()
-        longPressTimer?.prepareForInterfaceBuilder()
+        stopLongPressTimer()
+        delegate?.stopContinuousDelete()
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        hidePopup()
+        hideSubcharPopup()
+        stopLongPressTimer()
         delegate?.stopContinuousDelete()
     }
     
@@ -170,6 +184,11 @@ class CharacterKey: KeyBase {
     private func hideSubcharPopup() {
         subcharSelected = false
         subcharPopupView?.removeFromSuperview()
+        subcharPopupView = nil
+    }
+
+    private func stopLongPressTimer() {
+        longPressTimer?.invalidate()
+        longPressTimer = nil
     }
 }
-

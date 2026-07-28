@@ -119,7 +119,15 @@ class SpecialKey: KeyBase {
         AudioServicesPlaySystemSound(keyLabel == "backspace" ? 1155 : 1156)
 
         longPressTimer?.invalidate()
-        longPressTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(handleLongPress), userInfo: nil, repeats: false)
+        let timer = Timer(
+            timeInterval: 0.5,
+            target: self,
+            selector: #selector(handleLongPress),
+            userInfo: nil,
+            repeats: false
+        )
+        longPressTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -143,17 +151,12 @@ class SpecialKey: KeyBase {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        
-        initialTouchLocation = nil
-        isCursorMovement = false
-        
-        self.keyColor = keyLabel == "space" ? UIColor.dynamicKeyColor : UIColor.dynamicActionKeyColor
-        if self.keyLabel == "backspace" { setImage(UIImage(named: "delete.left"), for: .normal) }
-        self.setNeedsDisplay()
-        
-        longPressTimer?.invalidate()
-        longPressTimer?.prepareForInterfaceBuilder()
-        delegate?.stopContinuousDelete()
+        finishTracking(resetCursorMovement: false)
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        finishTracking(resetCursorMovement: true)
     }
     
     func resizeImage(_ image: UIImage, toWidth width: CGFloat, toHeight height: CGFloat) -> UIImage? {
@@ -186,6 +189,23 @@ class SpecialKey: KeyBase {
             delegate?.startContinuousDelete()
         }
     }
+
+    private func finishTracking(resetCursorMovement: Bool) {
+        initialTouchLocation = nil
+        isCursorMovement = false
+        if resetCursorMovement {
+            isCursorMoved = false
+        }
+
+        keyColor = keyLabel == "space" ? .dynamicKeyColor : .dynamicActionKeyColor
+        if keyLabel == "backspace" {
+            setImage(UIImage(named: "delete.left"), for: .normal)
+        }
+        setNeedsDisplay()
+
+        longPressTimer?.invalidate()
+        longPressTimer = nil
+        delegate?.stopContinuousDelete()
+    }
     
 }
-
