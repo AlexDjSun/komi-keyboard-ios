@@ -4,6 +4,7 @@ import UIKit
 
 class SubcharPopup: UIView {
     private var buttons: [UIButton] = []
+    private let shapeMask = CAShapeLayer()
     var selectionHandler: ((String) -> Void)?
     private var selectedButton: UIButton?
     private var subchars: [String]
@@ -21,8 +22,8 @@ class SubcharPopup: UIView {
 
     private func configureView() {
         backgroundColor = .dynamicPopupColor
-        layer.cornerRadius = 6
-        layer.masksToBounds = true
+        shapeMask.fillColor = UIColor.black.cgColor
+        layer.mask = shapeMask
     }
 
     private func createButtons(for subchars: [String]) {
@@ -65,6 +66,23 @@ class SubcharPopup: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutButtonViews()
+        updateShapeMask()
+    }
+
+    private func updateShapeMask() {
+        let topCornerRadius: CGFloat
+        if #available(iOSApplicationExtension 26.0, *) {
+            topCornerRadius = KeyBase.standardKeycapCornerRadius
+        } else {
+            topCornerRadius = 6
+        }
+
+        shapeMask.frame = bounds
+        shapeMask.path = KeyPopup.roundedRectPath(
+            in: bounds,
+            topCornerRadius: topCornerRadius,
+            bottomCornerRadius: 6
+        ).cgPath
     }
 
     private func layoutButtonViews() {

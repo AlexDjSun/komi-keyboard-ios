@@ -22,6 +22,15 @@ class KeyBase: UIButton {
     let longPressFeedback = UIImpactFeedbackGenerator(style: .heavy)
 
     var keyColor: UIColor = .dynamicKeyColor
+    static var standardKeycapCornerRadius: CGFloat {
+        if #available(iOSApplicationExtension 26.0, *) {
+            return 7
+        }
+        return 5
+    }
+    var keycapCornerRadius: CGFloat {
+        KeyBase.standardKeycapCornerRadius
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,15 +60,7 @@ class KeyBase: UIButton {
     }
 
     private func drawRoundedRectangle(in rect: CGRect, context: CGContext) {
-        let cornerRadius: CGFloat
-        if #available(iOSApplicationExtension 26.0, *) {
-            // The system keycap is a rounded rectangle, not a capsule. On the
-            // 27.5 pt character keys its corner becomes flat after about 7 pt.
-            cornerRadius = 7
-        } else {
-            cornerRadius = 5
-        }
-        let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
+        let path = UIBezierPath(roundedRect: rect, cornerRadius: keycapCornerRadius)
         configureShadow(in: context)
         context.addPath(path.cgPath)
         context.setFillColor(keyColor.cgColor)

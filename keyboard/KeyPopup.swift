@@ -64,7 +64,7 @@ class KeyPopup: UIView {
             width: keyWidth * 1.5,
             height: keyHeight * 0.75
         )
-        drawKeyShape(in: topShapeRect, color: .dynamicPopupColor)
+        drawPopupCap(in: topShapeRect, color: .dynamicPopupColor)
         drawKeyTitle(in: topShapeRect)
         
         // add a shadow
@@ -78,6 +78,80 @@ class KeyPopup: UIView {
         let path = UIBezierPath(roundedRect: rect, cornerRadius: 5)
         color.setFill()
         path.fill()
+    }
+
+    private func drawPopupCap(in rect: CGRect, color: UIColor) {
+        let path = KeyPopup.roundedRectPath(
+            in: rect,
+            topCornerRadius: key.keycapCornerRadius,
+            bottomCornerRadius: 5
+        )
+        color.setFill()
+        path.fill()
+    }
+
+    static func roundedRectPath(
+        in rect: CGRect,
+        topCornerRadius: CGFloat,
+        bottomCornerRadius: CGFloat
+    ) -> UIBezierPath {
+        let maximumRadius = min(rect.width / 2, rect.height / 2)
+        let topRadius = min(topCornerRadius, maximumRadius)
+        let bottomRadius = min(bottomCornerRadius, maximumRadius)
+        let curve: CGFloat = 0.552_284_75
+        let path = UIBezierPath()
+
+        path.move(to: CGPoint(x: rect.minX + topRadius, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - topRadius, y: rect.minY))
+        path.addCurve(
+            to: CGPoint(x: rect.maxX, y: rect.minY + topRadius),
+            controlPoint1: CGPoint(
+                x: rect.maxX - topRadius + curve * topRadius,
+                y: rect.minY
+            ),
+            controlPoint2: CGPoint(
+                x: rect.maxX,
+                y: rect.minY + topRadius - curve * topRadius
+            )
+        )
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - bottomRadius))
+        path.addCurve(
+            to: CGPoint(x: rect.maxX - bottomRadius, y: rect.maxY),
+            controlPoint1: CGPoint(
+                x: rect.maxX,
+                y: rect.maxY - bottomRadius + curve * bottomRadius
+            ),
+            controlPoint2: CGPoint(
+                x: rect.maxX - bottomRadius + curve * bottomRadius,
+                y: rect.maxY
+            )
+        )
+        path.addLine(to: CGPoint(x: rect.minX + bottomRadius, y: rect.maxY))
+        path.addCurve(
+            to: CGPoint(x: rect.minX, y: rect.maxY - bottomRadius),
+            controlPoint1: CGPoint(
+                x: rect.minX + bottomRadius - curve * bottomRadius,
+                y: rect.maxY
+            ),
+            controlPoint2: CGPoint(
+                x: rect.minX,
+                y: rect.maxY - bottomRadius + curve * bottomRadius
+            )
+        )
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + topRadius))
+        path.addCurve(
+            to: CGPoint(x: rect.minX + topRadius, y: rect.minY),
+            controlPoint1: CGPoint(
+                x: rect.minX,
+                y: rect.minY + topRadius - curve * topRadius
+            ),
+            controlPoint2: CGPoint(
+                x: rect.minX + topRadius - curve * topRadius,
+                y: rect.minY
+            )
+        )
+        path.close()
+        return path
     }
     
     private func drawKeyTitle(in rect: CGRect) {
